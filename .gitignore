@@ -1,0 +1,5 @@
+.idea
+/releases/*
+!/releases/.gitkeep
+/mysql_data/*
+!/mysql_data/.gitkeep

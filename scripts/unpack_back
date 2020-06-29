@@ -1,0 +1,24 @@
+#!/bin/bash
+
+release_name=$(date +%Y%m%d%H%M%S)_backend
+release_path=/releases/"$release_name"
+cd /releases
+mkdir "$release_name"
+chown -R 1000:1000 ./"$release_name"
+mv /archives/backend.tar "$release_path"
+cd "$release_path"
+tar -xf backend.tar ./
+chown -R apache:apache ./*
+rm backend.tar
+
+cd "$release_path"
+./yii migrate --interactive=0
+
+cd /releases
+unlink current_backend
+ln -s "$release_path" current_backend
+chown 1000:1000 current_backend
+chmod -R 777 "$release_path"/runtime
+cd /scripts
+php clear_old_releases.php
+
